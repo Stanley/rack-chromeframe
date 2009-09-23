@@ -7,9 +7,13 @@ module Rack
 
     def call(env)
       status, headers, response = @app.call(env)
-      new_body = insert_goods(build_response_body(response))
-      new_headers = recalculate_body_length(headers, new_body)
-      [status, new_headers, new_body]
+      if env['HTTP_USER_AGENT'] =~ /MSIE/ && response.content_type == 'text/html'
+        new_body = insert_goods(build_response_body(response)) 
+        new_headers = recalculate_body_length(headers, new_body)
+        [status, new_headers, new_body]
+      else
+        [status, headers, response]
+      end
     end
     
     def build_response_body(response)

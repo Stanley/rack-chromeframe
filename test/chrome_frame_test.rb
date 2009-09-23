@@ -9,7 +9,7 @@ class ChromeFrameTest < Test::Unit::TestCase
   include Rack::Test::Methods
 
   def app
-    hello_world_app =  lambda {|env| [200, {'Content-Type' =>  'text/plain', 'Content-Length' => '66'}, ["<html><head></head><body><form></form>Hello World!</body></html>"] ] }
+    hello_world_app =  lambda {|env| [200, {'Content-Type' =>  'text/html', 'Content-Length' => '66'}, Rack::Response.new(["<html><head></head><body><form></form>Hello World!</body></html>"]) ] }
     app = Rack::ChromeFrame.new(hello_world_app)
   end
   
@@ -20,6 +20,7 @@ class ChromeFrameTest < Test::Unit::TestCase
   end
   
   def test_add_to_head
+    header "User-Agent", "MSIE"
     get '/'
     assert_equal 200, last_response.status
     
@@ -31,6 +32,7 @@ class ChromeFrameTest < Test::Unit::TestCase
   end
   
   def test_add_to_body
+    header "User-Agent", "MSIE"
     get '/'
     assert_equal 200, last_response.status
     
