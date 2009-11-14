@@ -8,13 +8,13 @@ This middleware injects snippets of code into every outgoing HTML response, whic
 
 At the beginning of the `<head>`, enable Chrome Frame if installed:
   
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
 Rendres new page to prompt the user to install Chrome Frame (only when it's not yet installed) with following body section:
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-  <div id="cf-placeholder"></div>
-  <script>CFInstall.check({node: "cf-placeholder"});</script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+    <div id="cf-placeholder"></div>
+    <script>CFInstall.check({node: "cf-placeholder"});</script>
 
 The user will be presented with a blank page displaying the official [Chrome Frame installation page](http://www.google.com/chromeframe).
 
@@ -24,12 +24,12 @@ To use in your Rails app, place `lib/rack/chrome_frame.rb` in `lib/rack`.
 
 Then in `environment.rb`:
 
-  config.middleware.use "Rack::ChromeFrame"
+    config.middleware.use "Rack::ChromeFrame"
 
 Or in the `config.ru` (`config/rack.rb`) rackup file of your Sinatra (Merb) app:
 
-  require 'chrome_frame'
-  use Rack::ChromeFrame
+    require 'chrome_frame'
+    use Rack::ChromeFrame
     
 That's all there is to it. Fire up your app, View Source on any page, and see the magic.
 
@@ -37,16 +37,16 @@ That's all there is to it. Fire up your app, View Source on any page, and see th
 
 You can customize middleware behavior by passing some optional parameters:
 
-  use Rack::ChromeFrame, {:minimum => 8.0} # will prompt only users with older IE version than 8.0
+    use Rack::ChromeFrame, {:minimum => 8.0} # will prompt only users with older IE version than 8.0
 
 or
 
-  use Rack::ChromeFrame, {:destination => "http://www.github.com"} # will pass this option to CFInstall.check() JS method
+    use Rack::ChromeFrame, {:destination => "http://www.github.com"} # will pass this option to CFInstall.check() JS method
 
 ## Tests
 
 To run the tests:
 
-    cd spec
-    spec chrome_frame_spec.rb
+      cd spec
+      spec chrome_frame_spec.rb
 
