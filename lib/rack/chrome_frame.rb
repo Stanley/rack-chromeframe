@@ -6,11 +6,11 @@ module Rack
       @options = options
     end
 
-    def call(env)
-      status, headers, response = @app.call(env)
+    def call(env)      
 
-      if headers['Content-Type'] == 'text/html' and env['HTTP_USER_AGENT'] =~ /MSIE/
+      if env['HTTP_USER_AGENT'] =~ /MSIE/
         if env['HTTP_USER_AGENT'] =~ /chromeframe/
+          status, headers, response = @app.call(env)
           new_body = insert_tag(build_response_body(response))
           new_headers = recalculate_body_length(headers, new_body)
           return [status, new_headers, new_body]
@@ -32,7 +32,7 @@ module Rack
           return [200, {'Content-Type' =>  'text/html', 'Content-Length' => html.size.to_s}, Rack::Response.new([html])]
         end
       end
-      [status, headers, response]
+      @app.call(env)
     end
 
     def build_response_body(response)
